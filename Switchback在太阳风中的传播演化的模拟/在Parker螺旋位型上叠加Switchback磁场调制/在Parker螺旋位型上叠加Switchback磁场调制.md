@@ -3,7 +3,7 @@
 ---
 # 球壳上在 Helmholtz 投影（Poisson 解）校正清楚磁场散度的数值方案
 
-好——下面把**在球壳体积上**对 $\mathbf B^{(c)}$ 做 Helmholtz 投影（解 Poisson 方程 $\nabla^2\Phi=\nabla\!\cdot\mathbf B^{(c)}$ 并取 $\mathbf B=\mathbf B^{(c)}-\nabla\Phi$）的**完整、可实现**数值方案写清楚。重点采用对球面角用**球谐分解（spherical harmonic）**、径向用**有限差分（或谱）** 的混合谱-径向方法——这种方法在球壳上既准确又高效，且易于并行化。下面给出连续方程、每一步的离散化、边界条件选择、l=0 的特殊处理、实现要点与伪码/实现提示。
+下面把**在球壳体积上**对 $\mathbf B^{(c)}$ 做 Helmholtz 投影（解 Poisson 方程 $\nabla^2\Phi=\nabla\!\cdot\mathbf B^{(c)}$ 并取 $\mathbf B=\mathbf B^{(c)}-\nabla\Phi$）的**完整、可实现**数值方案写清楚。重点采用对球面角用**球谐分解（spherical harmonic）**、径向用**有限差分（或谱）** 的混合谱-径向方法——这种方法在球壳上既准确又高效，且易于并行化。下面给出连续方程、每一步的离散化、边界条件选择、l=0 的特殊处理、实现要点与伪码/实现提示。
 
 ---
 
@@ -34,7 +34,7 @@ $$
 
 $$
 \boxed{\ 
-\frac{1}{r^2}\frac{d}{dr}\!\Big(r^2\frac{d\phi_{\ell m}}{dr}\Big)
+\frac{1}{r^2}\frac{d}{dr}(r^2\frac{d\phi_{\ell m}}{dr})
 -\frac{\ell(\ell+1)}{r^2}\,\phi_{\ell m}(r)
 =\rho_{\ell m}(r).\ }
 $$
@@ -42,7 +42,7 @@ $$
 等价写法：
 
 $$
-\frac{d}{dr}\!\big(r^2\phi_{\ell m}'\big)-\ell(\ell+1)\phi_{\ell m}=r^2\rho_{\ell m}(r).
+\frac{d}{dr}(r^2\phi_{\ell m}')-\ell(\ell+1)\phi_{\ell m}=r^2\rho_{\ell m}(r).
 $$
 
 所以：问题转为对每个 $(\ell,m)$ 在径向解一个二阶常微分方程。
@@ -56,6 +56,7 @@ $$
   $$
   \rho_{\ell m}(r_i)=\int_0^{2\pi}\!\int_0^\pi \rho(r_i,\theta,\phi)\,Y_{\ell m}^\ast(\theta,\phi)\,\sin\theta\,d\theta d\phi.
   $$
+
 * 离散化用 Gauss-Legendre + trapezoidal in $\phi$（或现成的 SHT 库，如 `shtools`, `pyshtools`，或基于 FFT + associated Legendre 机制），计算得到 $\rho_{\ell m}(r_i)$ 对每个 $i$ 和 $(\ell,m)$。
 
 实现要点：
@@ -80,8 +81,11 @@ $$
 * **Neumann–Neumann（保边界法）**：在内外边界保持法向场不变，即
 
   $$
-  \left.\frac{\partial\Phi}{\partial r}\right|_{r=r_{\rm in}}=0,\qquad
-  \left.\frac{\partial\Phi}{\partial r}\right|_{r=r_{\rm out}}=0,
+  \frac{\partial\Phi}{\partial r}|_{r=r_{\rm in}}=0,
+  $$
+
+  $$
+  \frac{\partial\Phi}{\partial r}|_{r=r_{\rm out}}=0,
   $$
 
   因为 $B_n = B^{(c)}_n - \partial_n\Phi$，若要保持 $B_n$ 在边界不变，需要 $\partial_n\Phi=0$.
