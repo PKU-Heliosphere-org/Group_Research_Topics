@@ -118,8 +118,7 @@ $\int_V \nabla\cdot\mathbf B^{(c)} dV = \oint B^{(c)}_n dS - \oint B^0_n dS$ —
 定义 $q_i\equiv r_i^2$. 离散近似：
 
 $$
-\frac{1}{\Delta r}\Big( q_{i+\tfrac12}\frac{\phi_{i+1}-\phi_i}{\Delta r} - q_{i-\tfrac12}\frac{\phi_i-\phi_{i-1}}{\Delta r}\Big)
-- \ell(\ell+1)\phi_i = r_i^2\rho_{\ell m}(r_i),
+\frac{1}{\Delta r}\Big( q_{i+\tfrac12}\frac{\phi_{i+1}-\phi_i}{\Delta r} - q_{i-\tfrac12}\frac{\phi_i-\phi_{i-1}}{\Delta r}\Big)- \ell(\ell+1)\phi_i = r_i^2\rho_{\ell m}(r_i),
 $$
 
 其中 $q_{i\pm1/2}=\tfrac12(q_{i}\!+\!q_{i\pm1})$（或更精确用 $r_{i\pm1/2}^2$）。化为三对角线形式：
