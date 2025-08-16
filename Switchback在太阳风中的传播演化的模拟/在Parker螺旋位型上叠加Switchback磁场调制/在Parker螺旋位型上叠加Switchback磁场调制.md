@@ -81,11 +81,11 @@ $$
 * **Neumann–Neumann（保边界法）**：在内外边界保持法向场不变，即
 
   $$
-  \frac{\partial\Phi}{\partial r}|_{r=r_{\rm in}}=0,
+  \frac{\partial\Phi}{\partial r}\bigg|_{r=r_{\rm in}}=0,
   $$
 
   $$
-  \frac{\partial\Phi}{\partial r}|_{r=r_{\rm out}}=0,
+  \frac{\partial\Phi}{\partial r}\bigg|_{r=r_{\rm out}}=0,
   $$
 
   因为 $B_n = B^{(c)}_n - \partial_n\Phi$，若要保持 $B_n$ 在边界不变，需要 $\partial_n\Phi=0$.
